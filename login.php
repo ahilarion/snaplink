@@ -1,3 +1,25 @@
+<?php
+session_start();
+
+if (isset($_POST['login'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $db = new PDO("mysql:host=localhost:8889;dbname=shortcut-url", "root", "root");
+    $query = "SELECT * FROM users WHERE email = ?";
+    $stmt = $db->prepare($query);
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        header("Location: index.php");
+    } else {
+        $error = "Adresse e-mail ou mot de passe incorrect.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +33,8 @@
 </html>
 <body>
     <h2>Connexion</h2>
-    <form method="post" action="#">
+    <?php if (isset($error)) { echo '<p style="color:red;">' . $error . '</p>'; } ?>
+    <form method="post" action="login.php">
         <label for="email">Adresse e-mail:</label>
         <input type="email" name="email" required><br>
 
