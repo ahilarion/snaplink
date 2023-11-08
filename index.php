@@ -15,12 +15,12 @@
 <body>
     <nav>
         <ul>
-            <li><a href="/index.php">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <?php if (isset($_SESSION['user'])): ?>
-                <li><a href="/index.php?pages=logout">Logout</a></li>
+                <li><a href="index.php?pages=logout">Logout</a></li>
             <?php else: ?>
-                <li><a href="/index.php?pages=login">Login</a></li>
-                <li><a href="/index.php?pages=register">Register</a></li>
+                <li><a href="index.php?pages=login">Login</a></li>
+                <li><a href="index.php?pages=register">Register</a></li>
             <?php endif; ?>
         </ul>
     </nav>

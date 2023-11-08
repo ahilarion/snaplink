@@ -15,7 +15,7 @@
             if ($password === $password_confirm) {
                 $password = password_hash($password, PASSWORD_DEFAULT);
                 $db->query("INSERT INTO users (username, password, email) VALUES ('$username', '$password', '$email')");
-                header('Location: /index.php');
+                header('Location: index.php');
                 exit();
             }
         }
