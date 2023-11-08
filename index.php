@@ -1,5 +1,27 @@
 <?php
-   session_start();
+    require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__ . '/includes/shorter.php';
+
+    use Dotenv\Dotenv;
+
+    $dotenv = Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+
+    session_start();
+
+    define('BASE_URL', $_ENV['APP_URL']);
+
+    if (isset($_GET['url']) && isset($_SESSION['user'])) {
+        $url = $_GET['url'];
+        $shorter = new Shorter();
+        $shorter->shortenUrl($url);
+    }
+
+    if (isset($_GET['path'])) {
+        $shortUrl = BASE_URL . $_GET['path'];
+        $shorter = new Shorter();
+        $shorter->redirect($shortUrl);
+    }
 ?>
 <!doctype html>
 <html lang="fr">
@@ -15,16 +37,40 @@
 <body>
     <nav>
         <ul>
-            <li><a href="index.php">Home</a></li>
+            <li><a href="<?= BASE_URL; ?>index.php">Home</a></li>
             <?php if (isset($_SESSION['user'])): ?>
-                <li><a href="index.php?pages=logout">Logout</a></li>
+                <li><a href="<?= BASE_URL; ?>index.php?pages=logout">Logout</a></li>
             <?php else: ?>
-                <li><a href="index.php?pages=login">Login</a></li>
-                <li><a href="index.php?pages=register">Register</a></li>
+                <li><a href="<?= BASE_URL; ?>index.php?pages=login">Login</a></li>
+                <li><a href="<?= BASE_URL; ?>index.php?pages=register">Register</a></li>
             <?php endif; ?>
         </ul>
     </nav>
+    <form>
+        <input type="text" name="url" id="url" placeholder="Enter your URL">
+        <input type="submit" value="Shorter">
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Long URL</th>
+                <th>Short URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                if (isset($_SESSION['user'])) {
+                    $shorter = new Shorter();
+                    $urls = $shorter->getUrls();
+                    foreach ($urls as $url) {
+                        echo "<tr><td>{$url['long_url']}</td><td><a href='{$url['short_url']}'>{$url['short_url']}</a></td></tr>";
+                    }
+                }
+            ?>
+        </tbody>
+    </table>
     <?php
+
     $url = $_GET['pages'] ?? '/';
 
     switch ($url) {
