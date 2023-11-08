@@ -14,7 +14,7 @@
 
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user'] = $user;
-                header('Location: /index.php');
+                header('Location: index.php');
                 exit();
             }
         }
