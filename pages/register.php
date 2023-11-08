@@ -26,7 +26,7 @@
 
 <div>
     <h1>Register</h1>
-    <form action="/index.php?pages=register" method="post">
+    <form action="index.php?pages=register" method="post">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" required>
         <label for="email">Email</label>
@@ -37,5 +37,5 @@
         <input type="password" name="password_confirm" id="password_confirm" required>
         <input type="submit" name="register" value="Register">
     </form>
-    <a href="/index.php?pages=login">Login</a>
+    <a href="index.php?pages=login">Login</a>
 </div>
