@@ -16,12 +16,17 @@
 </head>
 <body>
     <?php
-        $db = new DB();
-        $result = $db->query("SELECT * FROM urls");
-        while ($row = $result->fetch_assoc()) {
-            echo $row['id'] . ' ' . $row['url'] . '<br>';
-        }
-        $db->close();
+    $url = $_SERVER['REQUEST_URI'];
+
+    switch ($url) {
+        case '/':
+            include 'pages/home.php';
+            break;
+        default:
+            header('HTTP/1.0 404 Not Found');
+            include 'pages/404.php';
+            break;
+    }
     ?>
 </body>
 </html>
