@@ -1,0 +1,24 @@
+// Colors
+$colors: (
+        primary-blue: #144EE3,
+        primary-pink: #EB568E,
+        black: #0B101B,
+        grey: #181E29,
+        lite: #C9CED6,
+        gradient: linear-gradient(to right, #144EE3, #EB568E)
+);
+
+// Spacing
+$wrapper: 25px;
+
+// Grid params
+$container: 1440px - 119px;
+$grid-columns: 12;
+$grid-gap: 10px;
+$side-spacing: 119px;
+
+// Breakpoints
+$breakpoints: (
+        md: 768px,
+        lg: 1280px,
+);
