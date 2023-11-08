@@ -1,13 +1,5 @@
 <?php
-    use Dotenv\Dotenv;
-
-    require_once __DIR__ . '/vendor/autoload.php';
-    $dotenv = Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
-
-    session_start();
-
-    define('BASE_URL', $_ENV['APP_URL']);
+   session_start();
 ?>
 <!doctype html>
 <html lang="fr">
@@ -23,12 +15,12 @@
 <body>
     <nav>
         <ul>
-            <li><a href="<?= BASE_URL; ?>index.php">Home</a></li>
+            <li><a href="/index.php">Home</a></li>
             <?php if (isset($_SESSION['user'])): ?>
-                <li><a href="<?= BASE_URL; ?>index.php?pages=logout">Logout</a></li>
+                <li><a href="/index.php?pages=logout">Logout</a></li>
             <?php else: ?>
-                <li><a href="<?= BASE_URL; ?>index.php?pages=login">Login</a></li>
-                <li><a href="<?= BASE_URL; ?>index.php?pages=register">Register</a></li>
+                <li><a href="/index.php?pages=login">Login</a></li>
+                <li><a href="/index.php?pages=register">Register</a></li>
             <?php endif; ?>
         </ul>
     </nav>

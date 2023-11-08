@@ -15,7 +15,7 @@
             if ($password === $password_confirm) {
                 $password = password_hash($password, PASSWORD_DEFAULT);
                 $db->query("INSERT INTO users (username, password, email) VALUES ('$username', '$password', '$email')");
-                header('Location: index.php');
+                header('Location: /index.php');
                 exit();
             }
         }
@@ -26,7 +26,7 @@
 
 <div>
     <h1>Register</h1>
-    <form action="<?= BASE_URL; ?>index.php?pages=register" method="post">
+    <form action="/index.php?pages=register" method="post">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" required>
         <label for="email">Email</label>
@@ -37,5 +37,5 @@
         <input type="password" name="password_confirm" id="password_confirm" required>
         <input type="submit" name="register" value="Register">
     </form>
-    <a href="<?= BASE_URL; ?>index.php?pages=login">Login</a>
+    <a href="/index.php?pages=login">Login</a>
 </div>
