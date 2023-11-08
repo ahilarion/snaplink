@@ -1,8 +1,14 @@
 <?php
-    require_once 'vendor/autoload.php';
-    require_once 'includes/db.php';
-?>
+    use Dotenv\Dotenv;
 
+    require_once __DIR__ . '/vendor/autoload.php';
+    $dotenv = Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+
+    session_start();
+
+    define('BASE_URL', $_ENV['APP_URL']);
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -15,19 +21,35 @@
     <title>URL Shorter</title>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="<?= BASE_URL; ?>index.php">Home</a></li>
+            <?php if (isset($_SESSION['user'])): ?>
+                <li><a href="<?= BASE_URL; ?>index.php?pages=logout">Logout</a></li>
+            <?php else: ?>
+                <li><a href="<?= BASE_URL; ?>index.php?pages=login">Login</a></li>
+                <li><a href="<?= BASE_URL; ?>index.php?pages=register">Register</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
     <?php
-    $url = $_SERVER['REQUEST_URI'];
-    if (str_contains($url, '/url-shorter')) {
-      $url = str_replace('/url-shorter', '', $url);
-    }
+    $url = $_GET['pages'] ?? '/';
 
     switch ($url) {
         case '/':
-            include 'pages/home.php';
+            require __DIR__ . '/pages/home.php';
+            break;
+        case 'login':
+            require __DIR__ . '/pages/login.php';
+            break;
+        case 'register':
+            require __DIR__ . '/pages/register.php';
+            break;
+        case 'logout':
+            require __DIR__ . '/pages/logout.php';
             break;
         default:
-            header('HTTP/1.0 404 Not Found');
-            include 'pages/404.php';
+            require __DIR__ . '/pages/404.php';
             break;
     }
     ?>
