@@ -11,9 +11,13 @@
 
     define('BASE_URL', $_ENV['APP_URL']);
 
-    if (isset($_GET['url']) && isset($_SESSION['user'])) {
+    if (isset($_SESSION['user'])) {
+        $user = $_SESSION['user'];
+    }
+
+    if (isset($_GET['url']) && isset($user)) {
         $url = $_GET['url'];
-        $shorter = new Shorter();
+        $shorter = new Shorter($user);
         $shorter->shortenUrl($url);
     }
 
@@ -38,7 +42,7 @@
     <nav>
         <ul>
             <li><a href="<?= BASE_URL; ?>index.php">Home</a></li>
-            <?php if (isset($_SESSION['user'])): ?>
+            <?php if (isset($user)): ?>
                 <li><a href="<?= BASE_URL; ?>index.php?pages=logout">Logout</a></li>
             <?php else: ?>
                 <li><a href="<?= BASE_URL; ?>index.php?pages=login">Login</a></li>
@@ -48,7 +52,7 @@
     </nav>
     <form>
         <input type="text" name="url" id="url" placeholder="Enter your URL">
-        <input type="submit" value="Shorter">
+        <input type="submit" <?= isset($user) ? "" : "disabled" ?> value="Shorter">
     </form>
     <table>
         <thead>
@@ -59,8 +63,8 @@
         </thead>
         <tbody>
             <?php
-                if (isset($_SESSION['user'])) {
-                    $shorter = new Shorter();
+                if (isset($user)) {
+                    $shorter = new Shorter($user);
                     $urls = $shorter->getUrls();
                     foreach ($urls as $url) {
                         echo "<tr><td>{$url['long_url']}</td><td><a href='{$url['short_url']}'>{$url['short_url']}</a></td></tr>";
