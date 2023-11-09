@@ -1,7 +1,6 @@
 <?php
 
 require_once 'vendor/autoload.php';
-require_once 'includes/user.php';
 require_once 'includes/shorter.php';
 
 use Dotenv\Dotenv;
