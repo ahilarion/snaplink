@@ -14,16 +14,19 @@
     $user->verifyCredentials();
 
     if (isset($_GET['url']) && $user->isLogged()) {
-        $url = $_GET['url'];
+        $url = htmlspecialchars($_GET['url']);
         $shorter = new Shorter($user->getUser());
         $shortUrl = $shorter->shortenUrl($url);
     }
 
-    if (isset($_GET['path'])) {
-        $shortUrl = BASE_URL . $_GET['path'];
-        $shorter = new Shorter();
-        $shorter->redirect($shortUrl);
+    if (isset($_GET['delete'])) {
+        $shortUrlToDelete = htmlspecialchars($_GET['delete']);
+        $shorter = new Shorter($user->getUser());
+        $shorter->deleteUrl($shortUrlToDelete);
+        header('Location: index.php');
+        exit();
     }
+
     /**     
      * if (isset($_GET['delete'])) {
      * $shortUrlToDelete = $_GET['delete'];
@@ -81,6 +84,8 @@
             <tr>
                 <th>Long URL</th>
                 <th>Short URL</th>
+                <th>Click count</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -89,17 +94,13 @@
                     $shorter = new Shorter($user->getUser());
                     $urls = $shorter->getUrls();
                     foreach ($urls as $url) {
-                        echo "<tr><td>{$url['long_url']}</td><td><a href='{$url['short_url']}'target=_BLANK>{$url['short_url']}</a></td></tr>";
+                        echo "<tr>
+                                <td>{$url['long_url']}</td>
+                                <td><a href='{$url['short_url']}'target=_BLANK>{$url['short_url']}</a></td>
+                                <td>{$url['click_count']}</td>
+                                <td><a href='index.php?delete={$url['id']}'>Delete</a></td>
+                              </tr>";
                     }
-                    /** 
-                     * foreach ($urls as $url) {
-                     * $shorter = new Shorter($user);
-                     * $clicCount = $shorter->getClicCount($url['short_url']);
-                     * echo "<tr><td>{$url['long_url']}</td><td><a href='{$url['short_url']}' target='_blank'>{$url['short_url']}</a></td><td>$clicCount</td>";
-                     * echo "<td><a href='index.php?disable={$url['short_url']}'>Disable</a></td>";
-                     * echo "<td><a href='index.php?delete={$url['short_url']}'>Delete</a></td></tr>";
-                     * }
-                    */
                 }
             ?>
         </tbody>
