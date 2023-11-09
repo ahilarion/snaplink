@@ -36,7 +36,6 @@ class Shorter {
         }
     }
 
-
     public function getUrls(): mysqli_result|bool|null
     {
         if (!$this->user) {
@@ -44,4 +43,31 @@ class Shorter {
         }
         return $this->db->query("SELECT * FROM urls WHERE user_id = {$this->user['id']}");
     }
+    /** 
+     * public function disableUrl($shortUrl) {
+     *  $this->db->query("UPDATE urls SET disabled = 1 WHERE short_url = '$shortUrl'");
+     * }
+
+     * public function deleteUrl($shortUrl) {
+     *  $this->db->query("DELETE FROM urls WHERE short_url = '$shortUrl'");
+     * }
+
+     * public function getClicCount($shortUrl) {
+         * $result = $this->db->query("SELECT clic_count FROM urls WHERE short_url = '$shortUrl'");
+         * $row = $result->fetch_assoc();
+         * return $row ? $row['clic_count'] : 0;
+     * }
+    
+     * public function storeFile($uploadedFile, $longUrl) {
+         * $fileName = md5(uniqid()) . '_' . basename($uploadedFile['name']);
+         * $uploadPath = __DIR__ . '/../uploads/' . $fileName;
+
+         * if (move_uploaded_file($uploadedFile['tmp_name'], $uploadPath)) {
+             * $this->db->query("INSERT INTO files (user_id, file_name, long_url) VALUES ({$this->user['id']}, '$fileName', '$longUrl')");
+         * }
+
+         * return $fileName;
+     * }
+    
+    */
 }

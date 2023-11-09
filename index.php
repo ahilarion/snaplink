@@ -26,6 +26,30 @@
         $shorter = new Shorter();
         $shorter->redirect($shortUrl);
     }
+    /**     
+     * if (isset($_GET['delete'])) {
+     * $shortUrlToDelete = $_GET['delete'];
+     * $shorter = new Shorter($user);
+     * $shorter->deleteUrl($shortUrlToDelete);
+     * header('Location: index.php');
+     * exit();
+     * }
+    
+     * if (isset($_GET['disable'])) {
+     * $shortUrlToDisable = $_GET['disable'];
+     * $shorter = new Shorter($user);
+     * $shorter->disableUrl($shortUrlToDisable);
+     * header('Location: index.php');
+     * exit();
+     * }
+
+     * if (isset($_FILES['file'])) {
+     *     $uploadedFile = $_FILES['file'];
+     *    $shorter = new Shorter($user);
+     *     $fileName = $shorter->storeFile($uploadedFile, '');
+     *     echo "File uploaded successfully. Stored as: $fileName";
+     * }
+    */
 ?>
 <!doctype html>
 <html lang="fr">
@@ -67,12 +91,29 @@
                     $shorter = new Shorter($user);
                     $urls = $shorter->getUrls();
                     foreach ($urls as $url) {
-                        echo "<tr><td>{$url['long_url']}</td><td><a href='{$url['short_url']}'>{$url['short_url']}</a></td></tr>";
+                        echo "<tr><td>{$url['long_url']}</td><td><a href='{$url['short_url']}'target=_BLANK>{$url['short_url']}</a></td></tr>";
                     }
+                    /** 
+                     * foreach ($urls as $url) {
+                     * $shorter = new Shorter($user);
+                     * $clicCount = $shorter->getClicCount($url['short_url']);
+                     * echo "<tr><td>{$url['long_url']}</td><td><a href='{$url['short_url']}' target='_blank'>{$url['short_url']}</a></td><td>$clicCount</td>";
+                     * echo "<td><a href='index.php?disable={$url['short_url']}'>Disable</a></td>";
+                     * echo "<td><a href='index.php?delete={$url['short_url']}'>Delete</a></td></tr>";
+                     * }
+                    */
                 }
             ?>
         </tbody>
     </table>
+    <!--
+    <form enctype="multipart/form-data" action="
+        <?= BASE_URL; ?>
+        index.php" method="post">
+        <input type="file" name="file" id="file">
+        <input type="submit" name="upload" value="Upload">
+    </form>
+    -->
     <?php
 
     $url = $_GET['pages'] ?? '/';
