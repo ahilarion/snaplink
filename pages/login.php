@@ -33,7 +33,7 @@
         <label for="password">Mot de passe</label>
         <input type="password" name="password" id="password" required>
       </div>
-      <button class="primary-btn" type="submit" name="register">Se connecter</button>
+      <button class="primary-btn" type="submit" name="login">Se connecter</button>
     </form>
   </div>
 </section>
