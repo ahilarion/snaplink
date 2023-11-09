@@ -1,35 +1,43 @@
 <?php
-    require_once __DIR__ . '/../vendor/autoload.php';
-    require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../includes/db.php';
 
-    if (isset($_POST['login'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+if (isset($_POST['login'])) {
+  $username = $_POST['username'];
+  $password = $_POST['password'];
 
-        $db = new DB();
-        $result = $db->query("SELECT * FROM users WHERE username = '$username'");
+  $db = new DB();
+  $result = $db->query("SELECT * FROM users WHERE username = '$username'");
 
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
+  if ($result->num_rows === 1) {
+    $user = $result->fetch_assoc();
 
-            if (password_verify($password, $user['password'])) {
-                $_SESSION['user'] = $user;
-                header('Location: index.php');
-                exit();
-            }
-        }
-
-        $error = 'Username or password incorrect';
+    if (password_verify($password, $user['password'])) {
+      $_SESSION['user'] = $user;
+      header('Location: index.php');
+      exit();
     }
+  }
+
+  $error = 'Username or password incorrect';
+}
 ?>
-<div>
-    <h1>Login</h1>
-    <form action="<?= BASE_URL; ?>index.php?pages=login" method="post">
-        <label for="username">Username</label>
+
+<?php include './components/header.php' ?>
+
+<section class="section-form">
+  <div class="form-container">
+    <h1>Se connecter</h1>
+    <form class="form" action="<?= BASE_URL; ?>index.php?pages=login" method="post">
+      <div class="form__fields">
+        <label for="username">Nom d'utilisateur</label>
         <input type="text" name="username" id="username" required>
-        <label for="password">Password</label>
+      </div>
+      <div class="form__fields">
+        <label for="password">Mot de passe</label>
         <input type="password" name="password" id="password" required>
-        <input type="submit" name="login" value="Login">
+      </div>
+      <button class="primary-btn" type="submit" name="register">Se connecter</button>
     </form>
-    <a href="<?= BASE_URL; ?>index.php?pages=register">Register</a>
-</div>
+  </div>
+</section>

@@ -1,0 +1,41 @@
+@include font-face('Space Grotesk', 'SpaceGrotesk-Regular', 400);
+@include font-face('Space Grotesk', 'SpaceGrotesk-Medium', 500);
+@include font-face('Space Grotesk', 'SpaceGrotesk-Bold', 700);
+
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+}
+
+button {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+}
+
+.header__logo a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 35px;
+}
+
+.gradient-text {
+  background: map-get($colors, gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  transition: background-position 0.5s;
+
+  &:hover {
+    background-position: 100% 0;
+  }
+}
+
+a {
+  font-size: 18px;
+
+  &:visited {
+    color: map-get($colors, lite);
+  }
+}

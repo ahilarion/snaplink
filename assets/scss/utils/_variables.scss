@@ -1,6 +1,7 @@
 // Colors
 $colors: (
         primary-blue: #144EE3,
+        primary-blue-opacity: rgba(20, 78, 227, 0.3),
         primary-pink: #EB568E,
         black: #0B101B,
         grey: #181E29,
@@ -8,11 +9,24 @@ $colors: (
         gradient: linear-gradient(to right, #144EE3, #EB568E)
 );
 
+// Fonts
+$fonts: (
+        'Regular': ('SpaceGrotesk-Regular', 400),
+        'Light': ('SpaceGrotesk-Light', 300),
+        'Medium': ('SpaceGrotesk-Medium', 500),
+        'SemiBold': ('SpaceGrotesk-SemiBold', 600),
+        'Bold': ('SpaceGrotesk-Bold', 700)
+);
+
+@each $name, $values in $fonts {
+  @include font-face('Space Grotesk', nth($values, 1), nth($values, 2));
+}
+
 // Spacing
 $wrapper: 25px;
 
 // Grid params
-$container: 1440px - 119px;
+$container: 1440px - 25px;
 $grid-columns: 12;
 $grid-gap: 10px;
 $side-spacing: 119px;

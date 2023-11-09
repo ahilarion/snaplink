@@ -1,0 +1,42 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  text-transform: none;
+  list-style: none;
+}
+
+body {
+  background: map-get($colors, black);
+  color: map-get($colors, lite);
+  font-family: 'Space Grotesk', sans-serif;
+  position: relative;
+}
+
+.img-container {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+
+  &__swirl {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: rotate 50s linear infinite;
+  }
+
+  &__cubes {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
