@@ -4,12 +4,16 @@ require_once __DIR__ . '/db.php';
 class Shorter {
     private string $baseUrl = BASE_URL;
     private mixed $user;
-    private $db;
+    private DB $db;
 
     public function __construct($user = null) {
         $this->user = $user;
         $this->db = new DB();
     }
+
+    /**
+     * @throws Exception
+     */
     public function shortenUrl($longUrl): string
     {
         if (!$this->user) {
