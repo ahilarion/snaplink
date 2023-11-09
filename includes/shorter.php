@@ -20,7 +20,7 @@ class Shorter {
             return 'Not logged in';
         }
         $urlHash = random_bytes(4);
-        $shortUrl = $this->baseUrl . bin2hex($urlHash);
+        $shortUrl = $this->baseUrl . 'r/' . bin2hex($urlHash);
         $this->db->query("INSERT INTO urls (user_id, long_url, short_url) VALUES ({$this->user['id']}, '$longUrl', '$shortUrl')");
 
         return $shortUrl;
@@ -28,8 +28,6 @@ class Shorter {
 
     public function redirect($shortUrl): void
     {
-        $urlHash = str_replace($this->baseUrl, '', $shortUrl);
-
         $longUrl = $this->db->query("SELECT long_url FROM urls WHERE short_url = '$shortUrl'");
         $longUrlRow = $longUrl->fetch_assoc();
 
