@@ -1,26 +1,22 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../includes/db.php';
+    require_once __DIR__ . '/../vendor/autoload.php';
+    require_once __DIR__ . '/../includes/user.php';
 
-if (isset($_POST['login'])) {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
+    if (isset($_POST['login']) && isset($user) && !$user->isLogged()) {
+        $username = htmlspecialchars($_POST['username']);
+        $password = htmlspecialchars($_POST['password']);
 
-  $db = new DB();
-  $result = $db->query("SELECT * FROM users WHERE username = '$username'");
-
-  if ($result->num_rows === 1) {
-    $user = $result->fetch_assoc();
-
-    if (password_verify($password, $user['password'])) {
-      $_SESSION['user'] = $user;
-      header('Location: index.php');
-      exit();
+        try {
+            $user->login($username, $password);
+            header('Location: index.php');
+            exit();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    } else if (isset($user) && $user->isLogged()) {
+        header('Location: index.php');
+        exit();
     }
-  }
-
-  $error = 'Username or password incorrect';
-}
 ?>
 
 <?php include './components/header.php' ?>

@@ -1,27 +1,25 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../includes/db.php';
+    require_once __DIR__ . '/../vendor/autoload.php';
+    require_once __DIR__ . '/../includes/user.php';
 
-if (isset($_POST['register'])) {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-  $password_confirm = $_POST['password_confirm'];
-  $email = $_POST['email'];
+    if(isset($_POST['register']) && isset($user) && !$user->isLogged()) {
+        $username = htmlspecialchars($_POST['username']);
+        $email = htmlspecialchars($_POST['email']);
+        $password = htmlspecialchars($_POST['password']);
+        $password_confirm = htmlspecialchars($_POST['password_confirm']);
 
-  $db = new DB();
-  $result = $db->query("SELECT * FROM users WHERE username = '$username'");
-
-  if ($result->num_rows === 0) {
-    if ($password === $password_confirm) {
-      $password = password_hash($password, PASSWORD_DEFAULT);
-      $db->query("INSERT INTO users (username, password, email) VALUES ('$username', '$password', '$email')");
-      header('Location: index.php');
-      exit();
+        $user = new User();
+        try {
+            $user->register($username, $password, $password_confirm, $email);
+            header('Location: index.php?pages=login');
+            exit();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    } else if (isset($user) && $user->isLogged()) {
+        header('Location: index.php');
+        exit();
     }
-  }
-
-  $error = 'Username already exists';
-}
 ?>
 
 <?php include './components/header.php' ?>

@@ -1,5 +1,6 @@
 <?php
-$_SESSION['user'] = null;
-session_destroy();
+if (isset($user) && $user->isLogged()) {
+    $user->logout();
+}
 header('Location: index.php');
 exit();

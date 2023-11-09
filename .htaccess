@@ -1,8 +1,7 @@
 Options +FollowSymLinks
 RewriteEngine On
 
+RewriteRule ^r/([a-zA-Z0-9]+)$ redirect.php [L]
+
 RewriteCond %{REQUEST_URI} !\.(css|js|jpg|png|gif)$
-
-RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
-
 ErrorDocument 404 /pages/404.php
