@@ -93,13 +93,14 @@ class Shorter {
         return false;
     }
 
-    private function click($shortUrl): int
+    private function click($shortUrl): void
     {
         $this->db->query("UPDATE urls SET click_count = click_count + 1 WHERE short_url = '$shortUrl'");
     
         $result = $this->db->query("SELECT click_count FROM urls WHERE short_url = '$shortUrl'");
         $row = $result->fetch_assoc();
     }
+
     public function deleteUrl($url_uuid): void
     {
         $currentUrl = $this->db->query("SELECT * FROM urls WHERE uuid = '$url_uuid'");
