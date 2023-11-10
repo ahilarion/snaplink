@@ -34,7 +34,15 @@
         header('Location: index.php');
         exit();
     }
-    
+
+    if (isset($_FILES['file'])) {
+        $uploadedFile = $_FILES['file'];
+        $shorter = new Shorter($user->getUser());
+        $shorter->storeFile($uploadedFile, ''); 
+        header('Location: index.php');
+        exit();
+    }
+
     /**     
      * if (isset($_GET['delete'])) {
      * $shortUrlToDelete = $_GET['delete'];
@@ -98,19 +106,6 @@
         </thead>
         <tbody>
             <?php
-
-                //if ($user->isLogged()) {
-                //    $shorter = new Shorter($user->getUser());
-                //    $urls = $shorter->getUrls();
-                //    foreach ($urls as $url) {
-                //        echo "<tr>
-                //                <td>{$url['long_url']}</td>
-                //                <td><a href='{$url['short_url']}'target=_BLANK>{$url['short_url']}</a></td>
-                //                <td>{$url['click_count']}</td>
-                //                <td><a href='index.php?delete={$url['id']}'>Delete</a></td>
-                //              </tr>";
-                //    }
-                //}
                 if ($user->isLogged()) {
                     $shorter = new Shorter($user->getUser());
                     $urls = $shorter->getUrls();
@@ -127,14 +122,45 @@
             ?>
         </tbody>
     </table>
-    <!--
-    <form enctype="multipart/form-data" action="
-        <?= BASE_URL; ?>
-        index.php" method="post">
+
+    <form enctype="multipart/form-data" action="<?= BASE_URL; ?>index.php" method="post">
+        <input type="hidden" name="MAX_FILE_SIZE" value="5242880">
         <input type="file" name="file" id="file">
         <input type="submit" name="upload" value="Upload">
     </form>
-    -->
+    
+    <table>
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                if ($user->isLogged()) {
+                    $shorter = new Shorter($user->getUser());
+                    $files = $shorter->getFiles();
+                    foreach ($files as $file) {
+                        echo "<tr>
+                                <td>{$file['file_name']}</td>
+                                <td><a href='index.php?download={$file['id']}'>Download</a></td>
+                            </tr>";
+                        
+                        echo "<tr>
+                                <td colspan='2'>File Details:
+                                    <ul>
+                                        <li>ID: {$file['id']}</li>
+                                        <li>Uploaded by: {$file['user_id']}</li>
+                                    </ul>
+                                </td>
+                            </tr>";
+                    }
+                }
+            ?>
+        </tbody>
+    </table>
+
     <?php
 
     $url = $_GET['pages'] ?? '/';

@@ -47,6 +47,24 @@ class Shorter {
         return $this->db->query("SELECT * FROM urls WHERE user_id = {$this->user['id']}");
     }
 
+    public function storeFile($uploadedFile, $longUrl): void
+    {
+        $fileName = md5(uniqid()) . '_' . basename($uploadedFile['name']);
+        $uploadPath = __DIR__ . '/../uploads/' . $fileName;
+
+        if (move_uploaded_file($uploadedFile['tmp_name'], $uploadPath)) {
+            $this->db->query("INSERT INTO files (user_id, file_name, long_url) VALUES ({$this->user['id']}, '$fileName', '$longUrl')");
+        }
+    }
+
+    public function getFiles(): mysqli_result|bool|null
+    {
+        if (!$this->user) {
+            return false;
+        }
+        return $this->db->query("SELECT * FROM files WHERE user_id = {$this->user['id']}");
+    }
+
     /**
      * 
      * private function click($shortUrl): void
