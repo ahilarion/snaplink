@@ -114,7 +114,7 @@
                     echo "<td>" . ($url['disabled'] ? 'No' : 'Yes') . "</td>";
                     echo "<td>";
                     echo "<a href='" . BASE_URL . "index.php?delete=" . $url['uuid'] . "'>Delete</a>";
-                    echo "<a href='" . BASE_URL . "index.php?disable=" . $url['uuid'] . "'>Disable</a>";
+                    echo "<a href='" . BASE_URL . "index.php?" . ($url['disabled'] ? 'enable=' : 'disable=') . $url['uuid'] . "'>" . ($url['disabled'] ? 'Enable' : 'Disable') . "</a>";
                     echo "</td>";
                     echo "</tr>";
                 }
