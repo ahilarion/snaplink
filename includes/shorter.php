@@ -26,17 +26,37 @@ class Shorter {
         return $shortUrl;
     }
 
+    /**
+     * @throws Exception
+     */
     public function redirect($shortUrl): void
     {
-        $longUrl = $this->db->query("SELECT long_url FROM urls WHERE short_url = '$shortUrl'");
-        $longUrlRow = $longUrl->fetch_assoc();
+        $currentUrl = $this->db->query("SELECT * FROM urls WHERE short_url = '$shortUrl'");
+        $currentUrl = $currentUrl->fetch_assoc();
 
-        if ($longUrlRow && isset($longUrlRow['long_url'])) {
+        if (!$currentUrl) {
+            throw new Exception('URL not found');
+        }
+
+        if ($currentUrl['disabled']) {
+            throw new Exception('URL disabled');
+        }
+
+        if ($currentUrl['link_type'] === 'file') {
+            $fileName = $currentUrl['file_name'];
+            $filePath = __DIR__ . '/../uploads/' . $fileName;
             $this->click($shortUrl);
-            $longUrl = $longUrlRow['long_url'];
-            header("Location: $longUrl");
+            header('Content-Type: application/octet-stream');
+            header('Content-Transfer-Encoding: Binary');
+            header('Content-disposition: attachment; filename="' . $currentUrl['display_name'] . '"');
+            readfile($filePath);
             exit();
         }
+
+        $this->click($shortUrl);
+
+        header('Location: ' . $currentUrl['long_url']);
+        exit();
     }
 
     public function getUrls(): mysqli_result|bool|null
@@ -47,13 +67,25 @@ class Shorter {
         return $this->db->query("SELECT * FROM urls WHERE user_id = {$this->user['id']}");
     }
 
-    public function storeFile($uploadedFile, $longUrl): void
+    /**
+     * @throws Exception
+     */
+    public function storeFile($uploadedFile): void
     {
-        $fileName = md5(uniqid()) . '_' . basename($uploadedFile['name']);
+        $displayName = htmlspecialchars($uploadedFile['name']);
+        $fileName = md5(uniqid()) . '.' . pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+
+        if (!file_exists(__DIR__ . '/../uploads/')) {
+            mkdir(__DIR__ . '/../uploads/');
+        }
+
         $uploadPath = __DIR__ . '/../uploads/' . $fileName;
 
+        $urlHash = random_bytes(4);
+        $shortUrl = $this->baseUrl . 'r/' . bin2hex($urlHash);
+
         if (move_uploaded_file($uploadedFile['tmp_name'], $uploadPath)) {
-            $this->db->query("INSERT INTO files (user_id, file_name, long_url) VALUES ({$this->user['id']}, '$fileName', '$longUrl')");
+            $this->db->query("INSERT INTO urls (user_id, short_url, link_type, file_name, display_name) VALUES ({$this->user['id']}, '$shortUrl', 'file', '$fileName', '$displayName')");
         }
     }
 
@@ -62,7 +94,7 @@ class Shorter {
         if (!$this->user) {
             return false;
         }
-        return $this->db->query("SELECT * FROM files WHERE user_id = {$this->user['id']}");
+        return false;
     }
 
     /**
@@ -87,19 +119,24 @@ class Shorter {
 
     public function deleteUrl($url_id): void
     {
-        $author_id = $this->db->query("SELECT user_id FROM urls WHERE id = '$url_id'");
-        $author_id = $author_id->fetch_assoc();
-        if ($author_id && $author_id['user_id'] === $this->user['id']) {
+        $currentUrl = $this->db->query("SELECT * FROM urls WHERE id = '$url_id'");
+        $currentUrl = $currentUrl->fetch_assoc();
+        if ($currentUrl && $currentUrl['user_id'] === $this->user['id']) {
+            if ($currentUrl['link_type'] === 'file') {
+                $fileName = $currentUrl['file_name'];
+                $filePath = __DIR__ . '/../uploads/' . $fileName;
+                unlink($filePath);
+            }
             $this->db->query("DELETE FROM urls WHERE id = '$url_id'");
         }
     }
 
-    public function disableUrl($shortUrl): void
+    public function disableUrl($url_id): void
     {
-        $author_id = $this->db->query("SELECT user_id FROM urls WHERE short_url = '$shortUrl'");
+        $author_id = $this->db->query("SELECT user_id FROM urls WHERE id = '$url_id'");
         $author_id = $author_id->fetch_assoc();
         if ($author_id && $author_id['user_id'] === $this->user['id']) {
-            $this->db->query("UPDATE urls SET disabled = 1 WHERE short_url = '$shortUrl'");
+            $this->db->query("UPDATE urls SET disabled = 1 WHERE id = '$url_id'");
         }
     }
     
