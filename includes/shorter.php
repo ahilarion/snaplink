@@ -21,7 +21,7 @@ class Shorter {
         }
         $urlHash = random_bytes(4);
         $shortUrl = $this->baseUrl . 'r/' . bin2hex($urlHash);
-        $this->db->query("INSERT INTO urls (user_id, long_url, short_url) VALUES ({$this->user['id']}, '$longUrl', '$shortUrl')");
+        $this->db->query("INSERT INTO urls (user_uuid, long_url, short_url) VALUES ('{$this->user['uuid']}', '$longUrl', '$shortUrl')");
 
         return $shortUrl;
     }
@@ -64,7 +64,7 @@ class Shorter {
         if (!$this->user) {
             return false;
         }
-        return $this->db->query("SELECT * FROM urls WHERE user_id = {$this->user['id']}");
+        return $this->db->query("SELECT * FROM urls WHERE user_uuid = '{$this->user['uuid']}'");
     }
 
     /**
@@ -85,67 +85,51 @@ class Shorter {
         $shortUrl = $this->baseUrl . 'r/' . bin2hex($urlHash);
 
         if (move_uploaded_file($uploadedFile['tmp_name'], $uploadPath)) {
-            $this->db->query("INSERT INTO urls (user_id, short_url, link_type, file_name, display_name) VALUES ({$this->user['id']}, '$shortUrl', 'file', '$fileName', '$displayName')");
+            $this->db->query("INSERT INTO urls (user_uuid, short_url, link_type, file_name, display_name) VALUES ('{$this->user['uuid']}', '$shortUrl', 'file', '$fileName', '$displayName')");
         }
     }
-
     public function getFiles(): mysqli_result|bool|null
     {
-        if (!$this->user) {
-            return false;
-        }
         return false;
     }
-
-    /**
-     * 
-     * private function click($shortUrl): void
-     * {
-     *   $this->db->query("UPDATE urls SET click_count = click_count + 1 WHERE short_url = '$shortUrl'");
-     * }
-     * 
-     * 
-     */
-
-    private function click($shortUrl): int
+    private function click($shortUrl): void
     {
         $this->db->query("UPDATE urls SET click_count = click_count + 1 WHERE short_url = '$shortUrl'");
     
         $result = $this->db->query("SELECT click_count FROM urls WHERE short_url = '$shortUrl'");
         $row = $result->fetch_assoc();
-    
-        return $row ? $row['click_count'] : 0;
-    }   
-
-    public function deleteUrl($url_id): void
+    }
+    public function deleteUrl($url_uuid): void
     {
-        $currentUrl = $this->db->query("SELECT * FROM urls WHERE id = '$url_id'");
+        $currentUrl = $this->db->query("SELECT * FROM urls WHERE uuid = '$url_uuid'");
         $currentUrl = $currentUrl->fetch_assoc();
-        if ($currentUrl && $currentUrl['user_id'] === $this->user['id']) {
+
+        if ($currentUrl && $currentUrl['user_uuid'] === $this->user['uuid']) {
             if ($currentUrl['link_type'] === 'file') {
                 $fileName = $currentUrl['file_name'];
                 $filePath = __DIR__ . '/../uploads/' . $fileName;
                 unlink($filePath);
             }
-            $this->db->query("DELETE FROM urls WHERE id = '$url_id'");
+
+            $this->db->query("DELETE FROM urls WHERE uuid = '$url_uuid' AND user_uuid = '{$this->user['uuid']}'");
         }
     }
 
-    public function disableUrl($url_id): void
+    public function disableUrl($url_uuid): void
     {
-        $author_id = $this->db->query("SELECT user_id FROM urls WHERE id = '$url_id'");
-        $author_id = $author_id->fetch_assoc();
-        if ($author_id && $author_id['user_id'] === $this->user['id']) {
-            $this->db->query("UPDATE urls SET disabled = 1 WHERE id = '$url_id'");
+        $author_uuid = $this->db->query("SELECT user_uuid FROM urls WHERE uuid = '$url_uuid'");
+        $author_uuid = $author_uuid->fetch_assoc();
+        if ($author_uuid && $author_uuid['user_uuid'] === $this->user['uuid']) {
+            $this->db->query("UPDATE urls SET disabled = 1 WHERE uuid = '$url_uuid' AND user_uuid = '{$this->user['uuid']}'");
         }
     }
 
-    public function enableUrl($url_id): void
+    public function enableUrl($url_uuid): void
     {
-        $author_id = $this->db->query("SELECT user_id FROM urls WHERE id = '$url_id'");
-        $author_id = $author_id->fetch_assoc();
-        if ($author_id && $author_id['user_id'] === $this->user['id']) {
-            $this->db->query("UPDATE urls SET disabled = 0 WHERE id = '$url_id'");
+        $author_uuid = $this->db->query("SELECT user_uuid FROM urls WHERE uuid = '$url_uuid'");
+        $author_uuid = $author_uuid->fetch_assoc();
+        if ($author_uuid && $author_uuid['user_uuid'] === $this->user['uuid']) {
+            $this->db->query("UPDATE urls SET disabled = 0 WHERE uuid = '$url_uuid' AND user_uuid = '{$this->user['uuid']}'");
         }
     }
 }

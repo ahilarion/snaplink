@@ -103,20 +103,22 @@
         </thead>
         <tbody>
             <?php
+            if ($user->isLogged()) {
                 $shorter = new Shorter($user->getUser());
                 $urls = $shorter->getUrls();
                 foreach ($urls as $url) {
                     echo "<tr>";
-                    echo "<td>". (empty($url['long_url']) ? $url['display_name'] : $url['long_url']) . "</td>";
+                    echo "<td>" . (empty($url['long_url']) ? $url['display_name'] : $url['long_url']) . "</td>";
                     echo "<td><a href='" . $url['short_url'] . "' target='_blank'>" . $url['short_url'] . "</a></td>";
                     echo "<td>" . $url['click_count'] . "</td>";
                     echo "<td>" . ($url['disabled'] ? 'No' : 'Yes') . "</td>";
                     echo "<td>";
-                    echo "<a href='" . BASE_URL . "index.php?delete=" . $url['id'] . "'>Delete</a>";
-                    echo "<a href='" . BASE_URL . "index.php?disable=" . $url['id'] . "'>Disable</a>";
+                    echo "<a href='" . BASE_URL . "index.php?delete=" . $url['uuid'] . "'>Delete</a>";
+                    echo "<a href='" . BASE_URL . "index.php?disable=" . $url['uuid'] . "'>Disable</a>";
                     echo "</td>";
                     echo "</tr>";
                 }
+            }
             ?>
         </tbody>
     </table>
