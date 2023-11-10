@@ -30,7 +30,7 @@ body {
     height: 100%;
     object-fit: cover;
     will-change: transform;
-    //animation: rotate 60s linear 10000;
+    animation: rotate 60s linear infinite;
   }
 
   &__cubes {
