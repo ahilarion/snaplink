@@ -16,7 +16,11 @@
     if (isset($_GET['url']) && $user->isLogged()) {
         $url = htmlspecialchars($_GET['url']);
         $shorter = new Shorter($user->getUser());
-        $shortUrl = $shorter->shortenUrl($url);
+        try {
+            $shortUrl = $shorter->shortenUrl($url);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     if (isset($_GET['delete'])) {
@@ -35,38 +39,25 @@
         exit();
     }
 
-    if (isset($_FILES['file'])) {
-        $uploadedFile = $_FILES['file'];
+    if (isset($_GET['enable'])) {
+        $shortUrlToEnable = htmlspecialchars($_GET['enable']);
         $shorter = new Shorter($user->getUser());
-        $shorter->storeFile($uploadedFile);
+        $shorter->enableUrl($shortUrlToEnable);
         header('Location: index.php');
         exit();
     }
 
-    /**     
-     * if (isset($_GET['delete'])) {
-     * $shortUrlToDelete = $_GET['delete'];
-     * $shorter = new Shorter($user);
-     * $shorter->deleteUrl($shortUrlToDelete);
-     * header('Location: index.php');
-     * exit();
-     * }
-    
-     * if (isset($_GET['disable'])) {
-     * $shortUrlToDisable = $_GET['disable'];
-     * $shorter = new Shorter($user);
-     * $shorter->disableUrl($shortUrlToDisable);
-     * header('Location: index.php');
-     * exit();
-     * }
-
-     * if (isset($_FILES['file'])) {
-     *     $uploadedFile = $_FILES['file'];
-     *    $shorter = new Shorter($user);
-     *     $fileName = $shorter->storeFile($uploadedFile, '');
-     *     echo "File uploaded successfully. Stored as: $fileName";
-     * }
-    */
+    if (isset($_FILES['file'])) {
+        $uploadedFile = $_FILES['file'];
+        $shorter = new Shorter($user->getUser());
+        try {
+            $shorter->storeFile($uploadedFile);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        header('Location: index.php');
+        exit();
+    }
 ?>
 <!doctype html>
 <html lang="fr">

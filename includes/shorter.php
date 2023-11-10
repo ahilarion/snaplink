@@ -139,32 +139,13 @@ class Shorter {
             $this->db->query("UPDATE urls SET disabled = 1 WHERE id = '$url_id'");
         }
     }
-    
-    /** 
-     * public function disableUrl($shortUrl) {
-     *  $this->db->query("UPDATE urls SET disabled = 1 WHERE short_url = '$shortUrl'");
-     * }
 
-     * public function deleteUrl($shortUrl) {
-     *  $this->db->query("DELETE FROM urls WHERE short_url = '$shortUrl'");
-     * }
-
-     * public function getClicCount($shortUrl) {
-         * $result = $this->db->query("SELECT clic_count FROM urls WHERE short_url = '$shortUrl'");
-         * $row = $result->fetch_assoc();
-         * return $row ? $row['clic_count'] : 0;
-     * }
-    
-     * public function storeFile($uploadedFile, $longUrl) {
-         * $fileName = md5(uniqid()) . '_' . basename($uploadedFile['name']);
-         * $uploadPath = __DIR__ . '/../uploads/' . $fileName;
-
-         * if (move_uploaded_file($uploadedFile['tmp_name'], $uploadPath)) {
-             * $this->db->query("INSERT INTO files (user_id, file_name, long_url) VALUES ({$this->user['id']}, '$fileName', '$longUrl')");
-         * }
-
-         * return $fileName;
-     * }
-    
-    */
+    public function enableUrl($url_id): void
+    {
+        $author_id = $this->db->query("SELECT user_id FROM urls WHERE id = '$url_id'");
+        $author_id = $author_id->fetch_assoc();
+        if ($author_id && $author_id['user_id'] === $this->user['id']) {
+            $this->db->query("UPDATE urls SET disabled = 0 WHERE id = '$url_id'");
+        }
+    }
 }
