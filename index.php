@@ -1,37 +1,39 @@
 <?php
-    require_once __DIR__ . '/vendor/autoload.php';
-    require_once __DIR__ . '/includes/shorter.php';
-    require_once __DIR__ . '/includes/user.php';
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/includes/shorter.php';
+require_once __DIR__ . '/includes/user.php';
 
-    global $user;
-    $user = new User();
-    use Dotenv\Dotenv;
-    define('BASE_URL', $_ENV['APP_URL']);
+global $user;
+$user = new User();
+
+use Dotenv\Dotenv;
+
+define('BASE_URL', $_ENV['APP_URL']);
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-    $user->verifyCredentials();
+$user->verifyCredentials();
 
-    if (isset($_GET['url']) && $user->isLogged()) {
-        $url = htmlspecialchars($_GET['url']);
-        $shorter = new Shorter($user->getUser());
-        $shortUrl = $shorter->shortenUrl($url);
-    }
+if (isset($_GET['url']) && $user->isLogged()) {
+  $url = htmlspecialchars($_GET['url']);
+  $shorter = new Shorter($user->getUser());
+  $shortUrl = $shorter->shortenUrl($url);
+}
 
-    if (isset($_GET['delete'])) {
-        $shortUrlToDelete = htmlspecialchars($_GET['delete']);
-        $shorter = new Shorter($user->getUser());
-        $shorter->deleteUrl($shortUrlToDelete);
-        header('Location: index.php');
-        exit();
-    }
+if (isset($_GET['delete'])) {
+  $shortUrlToDelete = htmlspecialchars($_GET['delete']);
+  $shorter = new Shorter($user->getUser());
+  $shorter->deleteUrl($shortUrlToDelete);
+  header('Location: index.php');
+  exit();
+}
 
-    if (isset($_GET['path'])) {
-        $shortUrl = BASE_URL . $_GET['path'];
-        $shorter = new Shorter();
-        $shorter->redirect($shortUrl);
-    }
+if (isset($_GET['path'])) {
+  $shortUrl = BASE_URL . $_GET['path'];
+  $shorter = new Shorter();
+  $shorter->redirect($shortUrl);
+}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -46,8 +48,8 @@ $dotenv->load();
 </head>
 <body>
 <div class="img-container">
-  <img class="img-container__swirl" src="./assets/img/Swirl.png" alt="Swirl">
-  <img class="img-container__cubes" src="./assets/img/Cubes.png" alt="Cubes">
+  <img class="img-container__swirl" src="./assets/svg/Swirl.svg" alt="Swirl">
+  <img class="img-container__cubes" src="./assets/svg/Cubes.svg" alt="Cubes">
 </div>
 
 <?php
@@ -72,5 +74,6 @@ switch ($url) {
     break;
 }
 ?>
+
 </body>
 </html>
