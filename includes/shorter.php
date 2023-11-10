@@ -97,16 +97,6 @@ class Shorter {
         return false;
     }
 
-    /**
-     * 
-     * private function click($shortUrl): void
-     * {
-     *   $this->db->query("UPDATE urls SET click_count = click_count + 1 WHERE short_url = '$shortUrl'");
-     * }
-     * 
-     * 
-     */
-
     private function click($shortUrl): int
     {
         $this->db->query("UPDATE urls SET click_count = click_count + 1 WHERE short_url = '$shortUrl'");
