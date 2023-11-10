@@ -18,14 +18,22 @@
         exit();
     }
 ?>
-<div>
-    <h1>Login</h1>
-    <form action="<?= BASE_URL; ?>index.php?pages=login" method="post">
-        <label for="username">Username</label>
+
+<?php include './components/header.php' ?>
+
+<section class="section-form">
+  <div class="form-container">
+    <h1>Se connecter</h1>
+    <form class="form" action="<?= BASE_URL; ?>index.php?pages=login" method="post">
+      <div class="form__fields">
+        <label for="username">Nom d'utilisateur</label>
         <input type="text" name="username" id="username" required>
-        <label for="password">Password</label>
+      </div>
+      <div class="form__fields">
+        <label for="password">Mot de passe</label>
         <input type="password" name="password" id="password" required>
-        <input type="submit" name="login" value="Login">
+      </div>
+      <button class="primary-btn" type="submit" name="login">Se connecter</button>
     </form>
-    <a href="<?= BASE_URL; ?>index.php?pages=register">Register</a>
-</div>
+  </div>
+</section>

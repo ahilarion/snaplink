@@ -17,23 +17,40 @@ class User {
         $this->user = [];
     }
 
+    /**
+     * @throws Exception
+     */
+    /**
+     * @throws Exception
+     */
     public function login($username, $password): bool
     {
-        $result = $this->db->query("SELECT * FROM users WHERE username = '$username'");
+        try {
+            $result = $this->db->query("SELECT * FROM users WHERE username = '$username'");
 
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-
-            if (password_verify($password, $user['password'])) {
-                $this->user = $user;
-                $_SESSION['user'] = $user;
-                $this->isLogged = true;
-                return true;
+            if ($result === false) {
+                throw new Exception("Database query error");
             }
-        }
 
-        return false;
+            if ($result->num_rows === 1) {
+                $user = $result->fetch_assoc();
+
+                if (password_verify($password, $user['password'])) {
+                    $this->user = $user;
+                    $this->isLogged = true;
+                    $_SESSION['user'] = $user;
+                    return true;
+                } else {
+                    throw new Exception("Invalid password");
+                }
+            } else {
+                throw new Exception("User not found");
+            }
+        } catch (Exception $e) {
+            throw new Exception("Login failed: " . $e->getMessage());
+        }
     }
+
 
     public function register($username, $password, $password_confirm, $email): bool
     {
@@ -64,7 +81,8 @@ class User {
     {
         if (isset($_SESSION['user'])) {
             $user = $_SESSION['user'];
-            $result = $this->db->query("SELECT * FROM users WHERE (username, id) = ('{$user['username']}', {$user['id']})");
+
+            $result = $this->db->query("SELECT * FROM users WHERE (username, uuid) = ('{$user['username']}', '{$user['uuid']}')");
 
             if ($result->num_rows === 1) {
                 $this->user = $user;
