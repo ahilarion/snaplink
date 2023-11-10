@@ -27,6 +27,14 @@
         exit();
     }
 
+    if (isset($_GET['disable'])) {
+        $shortUrlToDisable = htmlspecialchars($_GET['disable']);
+        $shorter = new Shorter($user->getUser());
+        $shorter->disableUrl($shortUrlToDisable);
+        header('Location: index.php');
+        exit();
+    }
+    
     /**     
      * if (isset($_GET['delete'])) {
      * $shortUrlToDelete = $_GET['delete'];
@@ -90,6 +98,19 @@
         </thead>
         <tbody>
             <?php
+
+                //if ($user->isLogged()) {
+                //    $shorter = new Shorter($user->getUser());
+                //    $urls = $shorter->getUrls();
+                //    foreach ($urls as $url) {
+                //        echo "<tr>
+                //                <td>{$url['long_url']}</td>
+                //                <td><a href='{$url['short_url']}'target=_BLANK>{$url['short_url']}</a></td>
+                //                <td>{$url['click_count']}</td>
+                //                <td><a href='index.php?delete={$url['id']}'>Delete</a></td>
+                //              </tr>";
+                //    }
+                //}
                 if ($user->isLogged()) {
                     $shorter = new Shorter($user->getUser());
                     $urls = $shorter->getUrls();
@@ -99,6 +120,7 @@
                                 <td><a href='{$url['short_url']}'target=_BLANK>{$url['short_url']}</a></td>
                                 <td>{$url['click_count']}</td>
                                 <td><a href='index.php?delete={$url['id']}'>Delete</a></td>
+                                <td><a href='index.php?disable={$url['short_url']}'>Disable</a></td>
                               </tr>";
                     }
                 }

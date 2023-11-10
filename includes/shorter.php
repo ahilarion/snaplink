@@ -47,10 +47,25 @@ class Shorter {
         return $this->db->query("SELECT * FROM urls WHERE user_id = {$this->user['id']}");
     }
 
-    private function click($shortUrl): void
+    /**
+     * 
+     * private function click($shortUrl): void
+     * {
+     *   $this->db->query("UPDATE urls SET click_count = click_count + 1 WHERE short_url = '$shortUrl'");
+     * }
+     * 
+     * 
+     */
+
+    private function click($shortUrl): int
     {
         $this->db->query("UPDATE urls SET click_count = click_count + 1 WHERE short_url = '$shortUrl'");
-    }
+    
+        $result = $this->db->query("SELECT click_count FROM urls WHERE short_url = '$shortUrl'");
+        $row = $result->fetch_assoc();
+    
+        return $row ? $row['click_count'] : 0;
+    }   
 
     public function deleteUrl($url_id): void
     {
@@ -61,6 +76,15 @@ class Shorter {
         }
     }
 
+    public function disableUrl($shortUrl): void
+    {
+        $author_id = $this->db->query("SELECT user_id FROM urls WHERE short_url = '$shortUrl'");
+        $author_id = $author_id->fetch_assoc();
+        if ($author_id && $author_id['user_id'] === $this->user['id']) {
+            $this->db->query("UPDATE urls SET disabled = 1 WHERE short_url = '$shortUrl'");
+        }
+    }
+    
     /** 
      * public function disableUrl($shortUrl) {
      *  $this->db->query("UPDATE urls SET disabled = 1 WHERE short_url = '$shortUrl'");
