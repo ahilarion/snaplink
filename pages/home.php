@@ -25,9 +25,9 @@
         <?php endif; ?>
     </form>
 
-    <form class="file-link-form" enctype="multipart/form-data" action="<?= BASE_URL; ?>index.php" method="post">
+    <form class="file-link-form" enctype="multipart/form-data" action="<?= BASE_URL; ?>index.php" method="post" onsubmit="return checkFileSize()">
       <input type="hidden" name="MAX_FILE_SIZE" value="5242880">
-      <input type="file" name="file" id="fileInput" style="opacity: 0; position: absolute; left: -9999px;">
+      <input type="file" name="file" id="fileInput" style="opacity: 0; position: absolute; left: -9999px;" size="60">
       <label class="file-input" for="fileInput">Choisir un fichier :
         <span id="fileName">Aucun fichier sélectionné</span></label>
       <?php if (isset($user) && $user->isLogged()): ?>
@@ -76,3 +76,19 @@
   </table>
 </section>
 <?php endif; ?>
+
+<script>
+    function checkFileSize() {
+        const input = document.getElementById('fileInput');
+        if (input.files.length > 0) {
+            const fileSize = input.files[0].size;
+            const maxSize = 5 * 1024 * 1024;
+
+            if (fileSize > maxSize) {
+                alert('Error: File size exceeds the maximum allowed size of 5 MB.');
+                return false;
+            }
+        }
+        return true;
+    }
+</script>

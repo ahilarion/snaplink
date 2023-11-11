@@ -52,6 +52,9 @@
         $uploadedFile = $_FILES['file'];
         $shorter = new Shorter($user->getUser());
         try {
+            if ($uploadedFile['size'] > 5 * 1024 * 1024) {
+                throw new Exception('File size exceeds the maximum allowed size of 5 MB.');
+            }
             $shorter->storeFile($uploadedFile);
         } catch (Exception $e) {
             echo $e->getMessage();
