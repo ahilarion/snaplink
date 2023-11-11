@@ -18,7 +18,7 @@
 
     <form class="shorter-link-form show">
       <input type="text" name="url" id="url" placeholder="Entrez votre URL">
-      <input class="primary-btn" type="submit" <?= isset($user) && $user->isLogged() ? "" : "disabled" ?> name="url" value="Gooo">
+      <input class="primary-btn" type="submit" <?= isset($user) && $user->isLogged() ? "" : "disabled" ?> name="submit" value="Gooo">
     </form>
 
     <form class="file-link-form" enctype="multipart/form-data" action="<?= BASE_URL; ?>index.php" method="post">

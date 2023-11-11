@@ -1,28 +1,30 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/includes/shorter.php';
-require_once __DIR__ . '/includes/user.php';
+    require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__ . '/includes/shorter.php';
+    require_once __DIR__ . '/includes/user.php';
 
-global $user;
-$user = new User();
+    global $user;
+    $user = new User();
+    use Dotenv\Dotenv;
 
-use Dotenv\Dotenv;
+    define('BASE_URL', $_ENV['APP_URL']);
+    $user->verifyCredentials();
 
-define('BASE_URL', $_ENV['APP_URL']);
 
     if (isset($_GET['url']) && $user->isLogged()) {
-        $url = htmlspecialchars($_GET['url']);
+        $longUrl = htmlspecialchars($_GET['url']);
         $shorter = new Shorter($user->getUser());
         try {
-            $shortUrl = $shorter->shortenUrl($url);
+            $shortUrl = $shorter->shortenUrl($longUrl);
+            echo $shortUrl;
         } catch (Exception $e) {
             echo $e->getMessage();
         }
+        header('Location: index.php');
+        exit();
     }
 
-    $user->verifyCredentials();
-
-    if (isset($_GET['disable'])) {
+    if (isset($_GET['disable']) && $user->isLogged()) {
         $shortUrlToDisable = htmlspecialchars($_GET['disable']);
         $shorter = new Shorter($user->getUser());
         $shorter->disableUrl($shortUrlToDisable);
@@ -30,7 +32,7 @@ define('BASE_URL', $_ENV['APP_URL']);
         exit();
     }
 
-    if (isset($_GET['enable'])) {
+    if (isset($_GET['enable']) && $user->isLogged()) {
         $shortUrlToEnable = htmlspecialchars($_GET['enable']);
         $shorter = new Shorter($user->getUser());
         $shorter->enableUrl($shortUrlToEnable);
@@ -38,7 +40,7 @@ define('BASE_URL', $_ENV['APP_URL']);
         exit();
     }
 
-    if (isset($_FILES['file'])) {
+    if (isset($_FILES['file']) && $user->isLogged()) {
         $uploadedFile = $_FILES['file'];
         $shorter = new Shorter($user->getUser());
         try {
