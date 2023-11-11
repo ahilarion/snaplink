@@ -24,6 +24,14 @@
         exit();
     }
 
+    if (isset($_GET['delete']) && $user->isLogged()) {
+        $shortUrlToDelete = htmlspecialchars($_GET['delete']);
+        $shorter = new Shorter($user->getUser());
+        $shorter->deleteUrl($shortUrlToDelete);
+        header('Location: index.php');
+        exit();
+    }
+
     if (isset($_GET['disable']) && $user->isLogged()) {
         $shortUrlToDisable = htmlspecialchars($_GET['disable']);
         $shorter = new Shorter($user->getUser());
