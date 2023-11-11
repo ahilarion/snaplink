@@ -42,3 +42,11 @@
     </form>
   </div>
 </section>
+
+<style>
+    .error-message {
+        color: red;
+        font-size: 1.2rem;
+        margin-top: 1rem;
+    }
+</style>

@@ -29,7 +29,7 @@ class User {
             $result = $this->db->query("SELECT * FROM users WHERE username = '$username'");
 
             if ($result === false) {
-                throw new Exception("Database query error");
+                throw new Exception("Error base de données");
             }
 
             if ($result->num_rows === 1) {
@@ -41,31 +41,50 @@ class User {
                     $_SESSION['user'] = $user;
                     return true;
                 } else {
-                    throw new Exception("Invalid password");
+                    throw new Exception("Mot de passe incorrect");
                 }
             } else {
-                throw new Exception("User not found");
+                throw new Exception("Nom d'utilisateur incorrect");
             }
         } catch (Exception $e) {
-            throw new Exception("Login failed: " . $e->getMessage());
+            throw new Exception("Connexion impossible : " . $e->getMessage());
         }
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function register($username, $password, $password_confirm, $email): bool
     {
-        $result = $this->db->query("SELECT * FROM users WHERE username = '$username'");
+        try {
+            $result = $this->db->query("SELECT * FROM users WHERE username = '$username'");
 
-        if ($result->num_rows === 0) {
-            if ($password === $password_confirm) {
-                $password = password_hash($password, PASSWORD_DEFAULT);
-                $this->db->query("INSERT INTO users (username, password, email) VALUES ('$username', '$password', '$email')");
-                return true;
+            if ($result === false) {
+                throw new Exception("Erreur base de données");
             }
-        }
 
-        return false;
+            if ($result->num_rows === 0) {
+                if ($password === $password_confirm) {
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    $insertResult = $this->db->query("INSERT INTO users (username, password, email) VALUES ('$username', '$hashedPassword', '$email')");
+
+                    if ($insertResult === false) {
+                        throw new Exception("Erreur lors de l'inscription");
+                    }
+
+                    return true;
+                } else {
+                    throw new Exception("Les mots de passe ne correspondent pas");
+                }
+            } else {
+                throw new Exception("Nom d'utilisateur déjà pris");
+            }
+        } catch (Exception $e) {
+            throw new Exception("Inscription impossible : " . $e->getMessage());
+        }
     }
+
 
     public function isLogged(): bool
     {
