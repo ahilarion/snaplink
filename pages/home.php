@@ -31,6 +31,7 @@
   </div>
 </section>
 
+<?php if (isset($user) && $user->isLogged()): ?>
 <section class="list">
   <table>
     <thead>
@@ -66,3 +67,4 @@
     </tbody>
   </table>
 </section>
+<?php endif; ?>
