@@ -51,6 +51,19 @@
 
     @media screen and (max-width: map-get($breakpoints, md)) {
       max-width: 100%;
+
+      thead tr th {
+        &:first-child {
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        }
+
+        &:last-child {
+          border-top-right-radius: 0;
+        }
+
+        height: 60px;
+      }
     }
   }
 
