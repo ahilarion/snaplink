@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('fileInput').addEventListener('change', updateFileName);
+
+    function updateFileName() {
+        let fileInput = document.getElementById('fileInput');
+        let fileName = document.getElementById('fileName');
+
+        fileName.textContent = fileInput.files[0] ? fileInput.files[0].name : 'Aucun fichier sélectionné';
+    }
 });
-
-function updateFileName() {
-    let fileInput = document.getElementById('fileInput');
-    let fileName = document.getElementById('fileName');
-
-    fileName.textContent = fileInput.files[0] ? fileInput.files[0].name : 'Aucun fichier sélectionné';
-}
