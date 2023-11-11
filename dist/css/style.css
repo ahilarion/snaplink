@@ -740,6 +740,7 @@ input[type=submit] {
   margin-bottom: 100px;
   position: relative;
   top: -300px;
+  z-index: 99;
 }
 @media screen and (max-width: 768px) {
   .list {
@@ -752,7 +753,7 @@ input[type=submit] {
   }
 }
 .list table {
-  max-width: 70vw;
+  max-width: 80vw;
   width: 100%;
   border-collapse: collapse;
   color: #C9CED6;
