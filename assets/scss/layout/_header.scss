@@ -27,9 +27,11 @@
     flex-direction: column;
     gap: 20px;
     margin-top: 20px;
+    position: initial;
 
     &__container-btn {
       justify-content: center;
+      gap: 0;
     }
   }
 }
