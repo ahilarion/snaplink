@@ -18,7 +18,11 @@
 
     <form class="shorter-link-form show">
       <input type="text" name="url" id="url" placeholder="Entrez votre URL">
-      <input class="primary-btn" type="submit" <?= isset($user) && $user->isLogged() ? "" : "disabled" ?> name="submit" value="Gooo">
+        <?php if (isset($user) && $user->isLogged()): ?>
+            <input class="primary-btn" type="submit" value="Gooo">
+        <?php else: ?>
+            <input class="primary-btn" type="submit" style="opacity: 0.5" value="Gooo" disabled>
+        <?php endif; ?>
     </form>
 
     <form class="file-link-form" enctype="multipart/form-data" action="<?= BASE_URL; ?>index.php" method="post">
@@ -26,7 +30,11 @@
       <input type="file" name="file" id="fileInput" style="opacity: 0; position: absolute; left: -9999px;">
       <label class="file-input" for="fileInput">Choisir un fichier :
         <span id="fileName">Aucun fichier sélectionné</span></label>
-      <input class="primary-btn" type="submit" <?= isset($user) && $user->isLogged() ? "" : "disabled" ?> name="upload" value="Gooo">
+      <?php if (isset($user) && $user->isLogged()): ?>
+        <input class="primary-btn" type="submit" name="submit" value="Gooo">
+      <?php else: ?>
+        <input class="primary-btn" type="submit" style="opacity: 0.5" name="submit" value="Gooo" disabled>
+      <?php endif; ?>
     </form>
   </div>
 </section>
