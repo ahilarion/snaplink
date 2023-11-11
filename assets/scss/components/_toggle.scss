@@ -9,6 +9,10 @@
   overflow: hidden;
   align-self: center;
 
+  @media screen and (max-width: map-get($breakpoints, md)) {
+    scale: 0.9;
+  }
+
   .toggle {
     width: 110px;
     height: 100%;

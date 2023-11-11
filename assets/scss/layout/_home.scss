@@ -16,6 +16,10 @@
     align-items: center;
     gap: 20px;
 
+    @media screen and (max-width: map-get($breakpoints, md)) {
+      gap: 35px;
+    }
+
     p {
       width: 80%;
       letter-spacing: 1px;
@@ -26,5 +30,16 @@
   h1 {
     margin: 0;
     font-size: 50px;
+  }
+
+  @media screen and (max-width: map-get($breakpoints, md)) {
+    h1 {
+      font-size: 35px;
+    }
+
+    p {
+      width: 90%;
+      font-size: 13px;
+    }
   }
 }

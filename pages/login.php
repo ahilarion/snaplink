@@ -21,7 +21,7 @@
 
 <?php include './components/header.php' ?>
 
-<section class="section-form">
+<section class="section-form wrapper">
   <div class="form-container">
     <h1>Se connecter</h1>
     <form class="form" action="<?= BASE_URL; ?>index.php?pages=login" method="post">

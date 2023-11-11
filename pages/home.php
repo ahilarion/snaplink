@@ -1,6 +1,6 @@
 <?php include './components/header.php' ?>
 
-<section class="main">
+<section class="main wrapper">
   <div class="main__container">
     <h1 class="gradient-text">Raccourcissez vos looongs liens :)</h1>
     <p>SnapLink est un service de raccourcissement d'URL efficace et facile à utiliser qui rationalise votre expérience
@@ -40,7 +40,7 @@
 </section>
 
 <?php if (isset($user) && $user->isLogged()): ?>
-<section class="list">
+<section class="list wrapper">
   <table>
     <thead>
     <tr>

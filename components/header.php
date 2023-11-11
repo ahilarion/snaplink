@@ -1,4 +1,4 @@
-<header class="header grid">
+<header class="header grid wrapper">
   <span class="header__logo"><a class="gradient-text" href="<?= BASE_URL; ?>index.php">SnapLink</a></span>
   <div class="header__container-btn">
     <?php if (isset($user) && $user->isLogged()): ?>

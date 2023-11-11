@@ -10,12 +10,21 @@ h1 {
 button {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 500;
+  color: map-get($colors, lite);
+
+  @media screen and (max-width: map-get($breakpoints, md)) {
+    scale: 0.8;
+  }
 }
 
 .header__logo a {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
   font-size: 35px;
+
+  @media screen and (max-width: map-get($breakpoints, md)) {
+    font-size: 28px;
+  }
 }
 
 .gradient-text {

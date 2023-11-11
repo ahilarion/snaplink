@@ -1,9 +1,19 @@
 .list {
-  padding: 0 15px;
-  height: 500px;
+  height: auto;
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 100px;
+  position: relative;
+  top: -300px;
+
+  @media screen and (max-width: map-get($breakpoints, md)) {
+    position: initial;
+  }
+
+  @media screen and (min-width: map-get($breakpoints, md)) {
+    top: -100px;
+  }
 
   table {
     max-width: 70vw;
@@ -38,9 +48,13 @@
 
       height: 60px;
     }
+
+    @media screen and (max-width: map-get($breakpoints, md)) {
+      max-width: 100%;
+    }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: map-get($breakpoints, md)) {
     table, thead, tbody, th, td, tr {
       display: block;
     }

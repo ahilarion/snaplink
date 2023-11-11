@@ -14,6 +14,13 @@ body {
   color: map-get($colors, lite);
   font-family: 'Space Grotesk', sans-serif;
   position: relative;
+  height: 100vh;
+  z-index: -10;
+}
+
+.wrapper {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .img-container {
