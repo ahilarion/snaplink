@@ -2,6 +2,8 @@
     require_once __DIR__ . '/../vendor/autoload.php';
     require_once __DIR__ . '/../includes/user.php';
 
+    $message = '';
+
     if (isset($_POST['login']) && isset($user) && !$user->isLogged()) {
         $username = htmlspecialchars($_POST['username']);
         $password = htmlspecialchars($_POST['password']);
@@ -11,7 +13,7 @@
             header('Location: index.php');
             exit();
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $message = $e->getMessage();
         }
     } else if (isset($user) && $user->isLogged()) {
         header('Location: index.php');
@@ -34,6 +36,9 @@
         <input type="password" name="password" id="password" required>
       </div>
       <button class="primary-btn" type="submit" name="login">Se connecter</button>
+        <?php if (!empty($message)):?>
+            <p class="error-message"><?= $message; ?></p>
+        <?php endif; ?>
     </form>
   </div>
 </section>

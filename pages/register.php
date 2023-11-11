@@ -2,6 +2,8 @@
     require_once __DIR__ . '/../vendor/autoload.php';
     require_once __DIR__ . '/../includes/user.php';
 
+    $message = '';
+
     if(isset($_POST['register']) && isset($user) && !$user->isLogged()) {
         $username = htmlspecialchars($_POST['username']);
         $email = htmlspecialchars($_POST['email']);
@@ -14,7 +16,7 @@
             header('Location: index.php?pages=login');
             exit();
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $message = $e->getMessage();
         }
     } else if (isset($user) && $user->isLogged()) {
         header('Location: index.php');
@@ -46,5 +48,8 @@
       </div>
       <button class="primary-btn" type="submit" name="register">S'inscrire</button>
     </form>
+      <?php if (!empty($message)):?>
+          <p class="error-message"><?= $message; ?></p>
+      <?php endif; ?>
   </div>
 </section>
