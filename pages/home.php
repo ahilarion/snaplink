@@ -16,8 +16,8 @@
       </label>
     </div>
 
-    <form class="shorter-link-form show">
-      <input type="text" name="url" id="url" placeholder="Entrez votre URL">
+    <form class="shorter-link-form show" onsubmit="return validateForm()">
+      <input type="text" name="url" id="url" required placeholder="Entrez votre URL">
         <?php if (isset($user) && $user->isLogged()): ?>
             <input class="primary-btn no-select" type="submit" value="Gooo">
         <?php else: ?>
@@ -27,7 +27,7 @@
 
     <form class="file-link-form" enctype="multipart/form-data" action="<?= BASE_URL; ?>index.php" method="post" onsubmit="return checkFileSize()">
       <input type="hidden" name="MAX_FILE_SIZE" value="5242880">
-      <input type="file" name="file" id="fileInput" style="opacity: 0; position: absolute; left: -9999px;" size="60">
+      <input type="file" required name="file" id="fileInput" style="opacity: 0; position: absolute; left: -9999px;" size="60">
       <label class="file-input" for="fileInput">Choisir un fichier :
         <span id="fileName">Aucun fichier sélectionné</span></label>
       <?php if (isset($user) && $user->isLogged()): ?>
@@ -93,5 +93,19 @@
             }
         }
         return true;
+    }
+
+    function validateForm() {
+        let urlInput = document.getElementById('url');
+        let urlValue = urlInput.value.trim();
+
+        let urlRegex = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}[.]{0,1}/;
+
+        if (urlRegex.test(urlValue)) {
+            return true;
+        } else {
+            alert("Veuillez entrer une URL valide.");
+            return false;
+        }
     }
 </script>
