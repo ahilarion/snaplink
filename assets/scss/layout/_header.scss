@@ -1,5 +1,8 @@
 .header {
   height: 100px;
+  position: absolute;
+  top: 0;
+  z-index: 10;
 
   &__logo {
     height: 100%;

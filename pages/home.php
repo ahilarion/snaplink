@@ -32,33 +32,37 @@
 </section>
 
 <section class="list">
-  <!--  <table>-->
-  <!--    <thead>-->
-  <!--    <tr>-->
-  <!--      <th>Name</th>-->
-  <!--      <th>Short URL</th>-->
-  <!--      <th>Click count</th>-->
-  <!--      <th>isActive</th>-->
-  <!--      <th>Action</th>-->
-  <!--    </tr>-->
-  <!--    </thead>-->
-  <!--    <tbody>-->
-  <!--    --><?php
-  //    $shorter = new Shorter($user->getUser());
-  //    $urls = $shorter->getUrls();
-  //    foreach ($urls as $url) {
-  //      echo "<tr>";
-  //      echo "<td>". (empty($url['long_url']) ? $url['display_name'] : $url['long_url']) . "</td>";
-  //      echo "<td><a href='" . $url['short_url'] . "' target='_blank'>" . $url['short_url'] . "</a></td>";
-  //      echo "<td>" . $url['click_count'] . "</td>";
-  //      echo "<td>" . ($url['disabled'] ? 'No' : 'Yes') . "</td>";
-  //      echo "<td>";
-  //      echo "<a href='" . BASE_URL . "index.php?delete=" . $url['id'] . "'>Delete</a>";
-  //      echo "<a href='" . BASE_URL . "index.php?disable=" . $url['id'] . "'>Disable</a>";
-  //      echo "</td>";
-  //      echo "</tr>";
-  //    }
-  //    ?>
-  <!--    </tbody>-->
-  <!--  </table>-->
+  <table>
+    <thead>
+    <tr>
+      <th>URL Court</th>
+      <th>URL Long</th>
+      <th>Nombre de clics</th>
+      <th>Actif ?</th>
+      <th>Action</th>
+      <th>On / Off</th>
+      <th>Supprimer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    if (isset($user) && $user->isLogged()) {
+      $shorter = new Shorter($user->getUser());
+      $urls = $shorter->getUrls();
+      foreach ($urls as $url) {
+        echo "<tr>";
+        echo "<td><a href='" . $url['short_url'] . "' target='_blank'>" . $url['short_url'] . "</a></td>";
+        echo "<td>" . (empty($url['long_url']) ? $url['display_name'] : $url['long_url']) . "</td>";
+        echo "<td>" . $url['click_count'] . "</td>";
+        echo "<td>" . ($url['disabled'] ? 'Non' : 'Oui') . "</td>";
+        echo "<td>";
+        echo "<a href='" . BASE_URL . "index.php?delete=" . $url['uuid'] . "'>Delete /</a>";
+        echo "<a href='" . BASE_URL . "index.php?disable=" . $url['uuid'] . "'> Disable</a>";
+        echo "</td>";
+        echo "</tr>";
+      }
+    }
+    ?>
+    </tbody>
+  </table>
 </section>
