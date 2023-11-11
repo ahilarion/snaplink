@@ -18,7 +18,7 @@
 
     <form class="shorter-link-form show">
       <input type="text" name="url" id="url" placeholder="Entrez votre URL">
-      <input class="primary-btn" type="submit" <?= isset($user) && $user->isLogged() ? "" : "disabled" ?> value="Gooo">
+      <input class="primary-btn" type="submit" <?= isset($user) && $user->isLogged() ? "" : "disabled" ?> name="url" value="Gooo">
     </form>
 
     <form class="file-link-form" enctype="multipart/form-data" action="<?= BASE_URL; ?>index.php" method="post">
@@ -26,7 +26,7 @@
       <input type="file" name="file" id="fileInput" style="opacity: 0; position: absolute; left: -9999px;">
       <label class="file-input" for="fileInput">Choisir un fichier :
         <span id="fileName">Aucun fichier sélectionné</span></label>
-      <input class="primary-btn" type="submit" name="upload" value="Gooo">
+      <input class="primary-btn" type="submit" <?= isset($user) && $user->isLogged() ? "" : "disabled" ?> name="upload" value="Gooo">
     </form>
   </div>
 </section>
@@ -36,10 +36,9 @@
     <thead>
     <tr>
       <th>URL Court</th>
-      <th>URL Long</th>
+      <th>Redirection vers</th>
       <th>Nombre de clics</th>
-      <th>Actif ?</th>
-      <th>Action</th>
+      <th>Status</th>
       <th>On / Off</th>
       <th>Supprimer</th>
     </tr>
@@ -55,10 +54,11 @@
         echo "<td>" . (empty($url['long_url']) ? $url['display_name'] : $url['long_url']) . "</td>";
         echo "<td>" . $url['click_count'] . "</td>";
         echo "<td>" . ($url['disabled'] ? 'Non' : 'Oui') . "</td>";
-        echo "<td>";
-        echo "<a href='" . BASE_URL . "index.php?delete=" . $url['uuid'] . "'>Delete /</a>";
-        echo "<a href='" . BASE_URL . "index.php?disable=" . $url['uuid'] . "'> Disable</a>";
-        echo "</td>";
+        if ($url['disabled'] === '0')
+            echo "<td><a href='" . BASE_URL . "index.php?disable=" . $url['uuid'] . "'>Désactiver</a></td>";
+        else
+            echo "<td><a href='" . BASE_URL . "index.php?enable=" . $url['uuid'] . "'>Activer</a></td>";
+        echo "<td><a href='" . BASE_URL . "index.php?delete=" . $url['uuid'] . "'>Supprimer</a></td>";
         echo "</tr>";
       }
     }

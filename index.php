@@ -20,7 +20,7 @@ define('BASE_URL', $_ENV['APP_URL']);
         }
     }
 
-$user->verifyCredentials();
+    $user->verifyCredentials();
 
     if (isset($_GET['disable'])) {
         $shortUrlToDisable = htmlspecialchars($_GET['disable']);
