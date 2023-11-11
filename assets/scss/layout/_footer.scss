@@ -13,6 +13,11 @@
 
     a {
       font-size: 14px;
+      color: map-get($colors, lite);
+
+      &:visited {
+        color: map-get($colors, lite);
+      }
     }
   }
 }

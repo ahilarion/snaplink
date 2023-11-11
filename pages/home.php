@@ -8,7 +8,7 @@
        ligne.</p>
 
     <input id="checkbox_toggle" type="checkbox" class="check">
-    <div class="checkbox">
+    <div class="checkbox no-select">
       <label class="slide" for="checkbox_toggle">
         <label class="toggle" for="checkbox_toggle"></label>
         <label class="text" for="checkbox_toggle"><img src="./assets/svg/link.svg" alt="link"> URL</label>
@@ -19,9 +19,9 @@
     <form class="shorter-link-form show">
       <input type="text" name="url" id="url" placeholder="Entrez votre URL">
         <?php if (isset($user) && $user->isLogged()): ?>
-            <input class="primary-btn" type="submit" value="Gooo">
+            <input class="primary-btn no-select" type="submit" value="Gooo">
         <?php else: ?>
-            <input class="primary-btn" type="submit" style="opacity: 0.5" value="Gooo" disabled>
+            <input class="primary-btn no-select" type="submit" style="opacity: 0.5" value="Gooo" disabled>
         <?php endif; ?>
     </form>
 
@@ -31,9 +31,9 @@
       <label class="file-input" for="fileInput">Choisir un fichier :
         <span id="fileName">Aucun fichier sélectionné</span></label>
       <?php if (isset($user) && $user->isLogged()): ?>
-        <input class="primary-btn" type="submit" name="submit" value="Gooo">
+        <input class="primary-btn no-select" type="submit" name="submit" value="Gooo">
       <?php else: ?>
-        <input class="primary-btn" type="submit" style="opacity: 0.5" name="submit" value="Gooo" disabled>
+        <input class="primary-btn no-select" type="submit" style="opacity: 0.5" name="submit" value="Gooo" disabled>
       <?php endif; ?>
     </form>
   </div>
