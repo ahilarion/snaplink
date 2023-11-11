@@ -3,8 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const SHORTER_LINK_FORM = document.querySelector(".shorter-link-form");
     const FILE_LINK_FORM = document.querySelector(".file-link-form");
 
-    console.log(CHECKBOX);
-
     CHECKBOX.addEventListener("click", () => {
         SHORTER_LINK_FORM.classList.toggle("show");
         FILE_LINK_FORM.classList.toggle("show");
