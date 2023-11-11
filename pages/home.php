@@ -40,41 +40,44 @@
 </section>
 
 <?php if (isset($user) && $user->isLogged()): ?>
-<section class="list wrapper">
-  <table>
-    <thead>
-    <tr>
-      <th>URL Court</th>
-      <th>Redirection vers</th>
-      <th>Nombre de clics</th>
-      <th>Status</th>
-      <th>On / Off</th>
-      <th>Supprimer</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php
-    if (isset($user) && $user->isLogged()) {
-      $shorter = new Shorter($user->getUser());
-      $urls = $shorter->getUrls();
-      foreach ($urls as $url) {
-        echo "<tr>";
-        echo "<td><a href='" . $url['short_url'] . "' target='_blank'>" . $url['short_url'] . "</a></td>";
-        echo "<td>" . (empty($url['long_url']) ? $url['display_name'] : $url['long_url']) . "</td>";
-        echo "<td>" . $url['click_count'] . "</td>";
-        echo "<td>" . ($url['disabled'] ? 'Non' : 'Oui') . "</td>";
-        if ($url['disabled'] === '0')
-            echo "<td><a href='" . BASE_URL . "index.php?disable=" . $url['uuid'] . "'>Désactiver</a></td>";
-        else
-            echo "<td><a href='" . BASE_URL . "index.php?enable=" . $url['uuid'] . "'>Activer</a></td>";
-        echo "<td><a href='" . BASE_URL . "index.php?delete=" . $url['uuid'] . "'>Supprimer</a></td>";
-        echo "</tr>";
-      }
-    }
-    ?>
-    </tbody>
-  </table>
-</section>
+<?php
+    $shorter = new Shorter($user->getUser());
+    $urls = $shorter->getUrls();
+    if ($urls->num_rows > 0):
+?>
+    <section class="list wrapper">
+      <table>
+        <thead>
+        <tr>
+          <th>URL Court</th>
+          <th>Redirection vers</th>
+          <th>Nombre de clics</th>
+          <th>Status</th>
+          <th>On / Off</th>
+          <th>Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+
+          foreach ($urls as $url) {
+            echo "<tr>";
+            echo "<td><a href='" . $url['short_url'] . "' target='_blank'>" . $url['short_url'] . "</a></td>";
+            echo "<td>" . (empty($url['long_url']) ? $url['display_name'] : $url['long_url']) . "</td>";
+            echo "<td>" . $url['click_count'] . "</td>";
+            echo "<td>" . ($url['disabled'] ? 'Non' : 'Oui') . "</td>";
+            if ($url['disabled'] === '0')
+                echo "<td><a href='" . BASE_URL . "index.php?disable=" . $url['uuid'] . "'>Désactiver</a></td>";
+            else
+                echo "<td><a href='" . BASE_URL . "index.php?enable=" . $url['uuid'] . "'>Activer</a></td>";
+            echo "<td><a href='" . BASE_URL . "index.php?delete=" . $url['uuid'] . "'>Supprimer</a></td>";
+            echo "</tr>";
+          }
+        ?>
+        </tbody>
+      </table>
+    </section>
+    <?php endif; ?>
 <?php endif; ?>
 
 <script>
