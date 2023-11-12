@@ -10,8 +10,11 @@ $currentPage = $_GET['pages'] ?? 'home';
         <?php else: ?>
             <?php if ($currentPage === 'login'): ?>
                 <button class="secondary-btn" onclick="window.location.href='<?= BASE_URL; ?>index.php?pages=register'">S'inscrire</button>
+            <?php elseif ($currentPage === 'register'): ?>
+                <button class="secondary-btn" onclick="window.location.href='<?= BASE_URL; ?>index.php?pages=login'">Se connecter</button>
             <?php else: ?>
-                <button class="secondary-btn" onclick="window.location.href='<?= BASE_URL; ?>index.php?pages=login'">Se Connecter</button>
+                <button class="secondary-btn" onclick="window.location.href='<?= BASE_URL; ?>index.php?pages=login'">Se connecter</button>
+                <button class="primary-btn" onclick="window.location.href='<?= BASE_URL; ?>index.php?pages=register'">S'inscrire</button>
             <?php endif; ?>
         <?php endif; ?>
     </div>
